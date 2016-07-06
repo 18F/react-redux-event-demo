@@ -1,0 +1,8 @@
+verbose: false
+instrumentation:
+  root: ./src/main
+  include-all-sources: true
+reporting:
+  reports:
+    - html
+  dir: ./coverage
