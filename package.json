@@ -12,8 +12,8 @@
     "lodash.omit": "^4.3.0",
     "lodash.reduce": "^4.4.0",
     "mini-signals": "^1.1.1",
-    "react": "^15.2.0",
-    "react-dom": "^15.2.0",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "whatwg-fetch": "^0.11.1"
@@ -25,6 +25,7 @@
     "babelify": "7.2.0",
     "browserify": "^13.0.1",
     "chai": "^3.5.0",
+    "chai-as-promised": "^5.3.0",
     "istanbul": "^1.1.0-alpha.1",
     "minifyify": "^7.3.3",
     "mocha": "^2.5.3",
