@@ -12,8 +12,8 @@ const hello = (props) => {
   const count = props.hello.count;
   return (
       <div>Hello world: { count }
-      <hr/>
-      <button type="button" title="increment" onClick={ increment }>increment</button>
+        <hr/>
+        <button type="button" title="increment" onClick={ increment }>increment</button>
       </div>
   );
 };

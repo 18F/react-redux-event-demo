@@ -7,13 +7,18 @@ import ready from "./ready";
 import store from "./reduxStore";
 
 import Hello from "./views/hello";
+import Fec from "./views/fec";
 
 const init = () => {
   var appContainerElement = document.querySelector("div[data-app]");
   var appView = (
-      <Provider store={ store }>
-      <Hello />
-      </Provider>
+    <Provider store={ store }>
+      <div>
+        <Hello />
+        <hr/>
+        <Fec />
+      </div>
+    </Provider>
   );
   
   ReactDOM.render(appView, appContainerElement);
