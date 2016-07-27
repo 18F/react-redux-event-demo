@@ -7,8 +7,7 @@ import Form from "./fecForm";
 const fec = (props) => {
   return (
     <div>
-      { emitForm() }
-      { emitResults() }
+      { emitForm(props) }
     </div>
   );
 };

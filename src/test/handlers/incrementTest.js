@@ -3,8 +3,6 @@ import { spy } from "sinon";
 import proxyquire from "proxyquire";
 proxyquire.noCallThru();
 
-const incrementType = "increment type";
-
 describe("increment event handler", () => {
   let fixture;
   let dispatch;

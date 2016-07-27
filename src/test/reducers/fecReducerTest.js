@@ -3,36 +3,95 @@ import proxyquire from "proxyquire";
 proxyquire.noCallThru();
 
 const setApiKeyType = "set api key type";
+const setCandidateNameType = "set candidate name type";
 
 describe("fecReducer", () => {
-  let fixture;
+  describe("set api key", () => {
+    let fixture;
+    
+    beforeEach(() => {
+      fixture = proxyquire("../../main/reducers/fecReducer", {
+        "../actionCreators/setApiKey": {
+          type: setApiKeyType
+        }
+      }).default;
+    });
+
+    it("initializes to a state with no results", () => {
+      const actual = fixture(undefined);
+      
+      expect(actual).to.deep.equal({
+        hasResults: false
+      });
+    });
   
-  beforeEach(() => {
-    fixture = proxyquire("../../main/reducers/fecReducer", {
-      "../actionCreators/setApiKey": {
-        type: setApiKeyType
-      }
-    }).default;
-  });
+    it("sets an api key", () => {
+      const apiKey = "lfijliwjfrjsl";
+      const actual = fixture({
+        hasResults: false
+      }, {
+        type: setApiKeyType,
+        apiKey: apiKey
+      });
 
-  it("initializes to a state with no results", () => {
-    const actual = fixture(undefined);
+      expect(actual).to.deep.equal({
+        hasResults: false,
+        apiKey: apiKey
+      });
+    });
 
-    expect(actual).to.deep.equal({
-      hasResults: false
+    it("ignores irrelevant actions", () => {
+      const originalState = {
+        anyState: "ok"
+      };
+      
+      const actual = fixture(originalState, {
+        type: "wufhuiehgurg",
+        apiKey: "hi"
+      });
+
+      expect(actual).to.deep.equal(originalState);
     });
   });
 
-  it("sets an api key", () => {
-    const apiKey = "lfijliwjfrjsl";
-    const actual = fixture({
-      type: setApiKeyType,
-      apiKey: apiKey
+  describe("set candidate name", () => {
+    let fixture;
+    
+    beforeEach(() => {
+      fixture = proxyquire("../../main/reducers/fecReducer", {
+        "../actionCreators/setCandidateName": {
+          type: setCandidateNameType
+        }
+      }).default;
     });
 
-    expect(actual).to.deep.equal({
-      hasResults: false,
-      apiKey: apiKey
+    it("sets a candidate name", () => {
+      const candidateName = "name";
+      const actual = fixture({
+        hasResults: false
+      }, {
+        type: setCandidateNameType,
+        name: candidateName
+      });
+
+      expect(actual).to.deep.equal({
+        hasResults: false,
+        candidateName: candidateName
+      });
+    });
+
+    it("ignores irrelevant actions", () => {
+      const originalState = {
+        anyState: "ok"
+      };
+      
+      const actual = fixture(originalState, {
+        type: "wufhuiehgurg",
+        name: "hi"
+      });
+
+      expect(actual).to.deep.equal(originalState);
     });
   });
+
 });
