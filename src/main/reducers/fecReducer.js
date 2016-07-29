@@ -1,6 +1,7 @@
 import assign from "lodash.assign";
 import { type as setApiKeyType } from "../actionCreators/setApiKey";
 import { type as setCandidateNameType } from "../actionCreators/setCandidateName";
+import { type as setCandidatesType } from "../actionCreators/setApiResults";
 
 const defaultState = () => {
   return { hasResults: false };
@@ -19,6 +20,10 @@ const fecReducer = (state, action) => {
   case setCandidateNameType:
     return assign({}, state, {
       candidateName: action.name
+    });
+  case setCandidatesType:
+    return assign({}, state, {
+      candidates: action.results
     });
   }
   

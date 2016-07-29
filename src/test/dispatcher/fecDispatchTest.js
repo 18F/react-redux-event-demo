@@ -3,6 +3,8 @@ import { spy } from "sinon";
 import proxyquire from "proxyquire";
 proxyquire.noCallThru();
 
+const emptyPlaceholderDependency = { };
+
 describe("fecDispatch", () => {
   describe("set api key", () => {
     let fixture;
@@ -16,7 +18,9 @@ describe("fecDispatch", () => {
         "../eventCreators/setApiKey": {
           type: setApiKeyType
         },
-        "../handlers/setApiKey": setApiKeyHandler
+        "../handlers/setApiKey": setApiKeyHandler,
+        "../handlers/setCandidateName": emptyPlaceholderDependency,
+        "../handlers/findCandidatesWithNameLike": emptyPlaceholderDependency
       }).default;
     });
 
@@ -49,7 +53,10 @@ describe("fecDispatch", () => {
         "../eventCreators/setCandidateName": {
           type: setCandidateNameType
         },
-        "../handlers/setCandidateName": setCandidateNameHandler
+        "../handlers/setCandidateName": setCandidateNameHandler,
+        "../handlers/setApiKey": emptyPlaceholderDependency,
+        "../handlers/findCandidatesWithNameLike": emptyPlaceholderDependency
+
       }).default;
     });
 
@@ -70,4 +77,29 @@ describe("fecDispatch", () => {
     });
   });
 
+  describe("dispatches to the find candidates with name like handler", () => {
+    let fixture;
+    const findCandidatesWithNameLikeEventType = "ligrkusrgkuhkurghrhg";
+    const findCandidatesWithNameLikeEventHandler = spy();
+    
+    beforeEach(() => {
+      fixture = proxyquire("../../main/dispatchers/fecDispatch", {
+        "../eventCreators/findCandidatesWithNameLike": {
+          type: findCandidatesWithNameLikeEventType
+        },
+        "../handlers/findCandidatesWithNameLike": findCandidatesWithNameLikeEventHandler,
+        "../handlers/setApiKey": emptyPlaceholderDependency,
+        "../handlers/setCandidateName": emptyPlaceholderDependency
+      }).default;
+    });
+
+    it("maps a hit api event to the hit api handler", () => {
+     
+      fixture({
+        type: findCandidatesWithNameLikeEventType
+      });
+
+      expect(findCandidatesWithNameLikeEventHandler.calledOnce).to.be.true;
+    });
+  });
 });

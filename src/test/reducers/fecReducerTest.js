@@ -4,6 +4,7 @@ proxyquire.noCallThru();
 
 const setApiKeyType = "set api key type";
 const setCandidateNameType = "set candidate name type";
+const setApiResultsType = "set api results type";
 
 describe("fecReducer", () => {
   describe("set api key", () => {
@@ -94,4 +95,48 @@ describe("fecReducer", () => {
     });
   });
 
+  describe("sets candidates with name like", () => {
+    let fixture;
+    
+    beforeEach(() => {
+      fixture = proxyquire("../../main/reducers/fecReducer", {
+        "../actionCreators/setApiResults": {
+          type: setApiResultsType
+        }
+      }).default;
+    });
+
+    it("sets candidates with name like with results", () => {
+      const results = {
+        "hoo": "boo",
+        "woo": "doo",
+        "soo": {
+          "noo": "goo"
+        }
+      };
+      
+      const actual = fixture({
+      }, {
+        type: setApiResultsType,
+        results: results
+      });
+
+      expect(actual).to.deep.equal({
+        candidates: results
+      });
+    });
+
+    it("ignores irrelevant actions", () => {
+      const originalState = {
+        anyState: "ok"
+      };
+      
+      const actual = fixture(originalState, {
+        type: "wufhuiehgurg",
+        name: "hi"
+      });
+
+      expect(actual).to.deep.equal(originalState);
+    });
+  });
 });
