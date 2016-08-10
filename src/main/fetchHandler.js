@@ -2,7 +2,7 @@ import assign from "lodash.assign";
 import fetch from "./fetchProxy";
 import detectHttpFailureResponse from "./detectHttpFailureResponse";
 
-export default (url, method = "GET", body) => {
+const rawFetch = (url, method = "GET", body) => {
 	let fetchParams = {
 		method: method,
 		credentials: "same-origin",
@@ -20,3 +20,14 @@ export default (url, method = "GET", body) => {
 		.then(detectHttpFailureResponse);
 };
 
+const jsonFetch = (url, method, body) => {
+  return rawFetch(url, method, body)
+    .then(processResultsAsJson);
+};
+
+const processResultsAsJson = (results) => {
+  return results.json();
+};
+
+export { rawFetch };
+export default jsonFetch;
