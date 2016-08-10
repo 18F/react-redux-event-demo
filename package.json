@@ -4,13 +4,6 @@
   "dependencies": {
     "es6-promise": "^3.2.1",
     "lodash.assign": "^4.0.9",
-    "lodash.concat": "^4.3.1",
-    "lodash.debounce": "^4.0.6",
-    "lodash.delay": "^4.0.2",
-    "lodash.isequal": "^4.2.0",
-    "lodash.map": "^4.4.0",
-    "lodash.omit": "^4.3.0",
-    "lodash.reduce": "^4.4.0",
     "mini-signals": "^1.1.1",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
