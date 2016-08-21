@@ -6,17 +6,17 @@ proxyquire.noCallThru();
 describe("eventDispatch integration test", () => {
   let fixture;
   let getState;
-  let genericDispatcher, genericDispatcher2, genericDispatcher3;
+  let genericHandler, genericHandler2, genericHandler3;
   
   beforeEach(() => {
-    genericDispatcher = spy();
-    genericDispatcher2 = spy();
-    genericDispatcher3 = spy();
+    genericHandler = spy();
+    genericHandler2 = spy();
+    genericHandler3 = spy();
     getState = stub();
 
-    const dispatchers = [ genericDispatcher, genericDispatcher2, genericDispatcher3 ];
+    const handlers = [ genericHandler, genericHandler2, genericHandler3 ];
     fixture = proxyquire("../main/eventDispatch", {
-      "./dispatchers": dispatchers,
+      "./handlers": handlers,
       "./reduxStore": {
         getState: getState
       }
@@ -35,11 +35,11 @@ describe("eventDispatch integration test", () => {
 
     fixture(event);
 
-    expect(genericDispatcher.calledOnce).to.be.true;
-    expect(genericDispatcher.calledWith(state, event)).to.be.true;
-    expect(genericDispatcher2.calledOnce).to.be.true;
-    expect(genericDispatcher2.calledWith(state, event)).to.be.true;
-    expect(genericDispatcher3.calledOnce).to.be.true;
-    expect(genericDispatcher3.calledWith(state, event)).to.be.true;
+    expect(genericHandler.calledOnce).to.be.true;
+    expect(genericHandler.calledWith(state, event)).to.be.true;
+    expect(genericHandler2.calledOnce).to.be.true;
+    expect(genericHandler2.calledWith(state, event)).to.be.true;
+    expect(genericHandler3.calledOnce).to.be.true;
+    expect(genericHandler3.calledWith(state, event)).to.be.true;
   });
 });
