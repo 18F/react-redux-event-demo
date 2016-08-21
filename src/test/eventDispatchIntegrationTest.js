@@ -6,14 +6,17 @@ proxyquire.noCallThru();
 describe("eventDispatch integration test", () => {
   let fixture;
   let getState;
-  let genericDispatcher;
+  let genericDispatcher, genericDispatcher2, genericDispatcher3;
   
   beforeEach(() => {
     genericDispatcher = spy();
+    genericDispatcher2 = spy();
+    genericDispatcher3 = spy();
     getState = stub();
 
+    const dispatchers = [ genericDispatcher, genericDispatcher2, genericDispatcher3 ];
     fixture = proxyquire("../main/eventDispatch", {
-      "./dispatchers": [ genericDispatcher ],
+      "./dispatchers": dispatchers,
       "./reduxStore": {
         getState: getState
       }
@@ -31,7 +34,12 @@ describe("eventDispatch integration test", () => {
     getState.returns(state);
 
     fixture(event);
+
     expect(genericDispatcher.calledOnce).to.be.true;
     expect(genericDispatcher.calledWith(state, event)).to.be.true;
+    expect(genericDispatcher2.calledOnce).to.be.true;
+    expect(genericDispatcher2.calledWith(state, event)).to.be.true;
+    expect(genericDispatcher3.calledOnce).to.be.true;
+    expect(genericDispatcher3.calledWith(state, event)).to.be.true;
   });
 });

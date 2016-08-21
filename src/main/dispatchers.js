@@ -1,6 +1,13 @@
-import helloDispatch from "./dispatchers/helloDispatch";
-import fecDispatch from "./dispatchers/fecDispatch";
+import findCandidatesWithNameLikeHandler from "./handlers/findCandidatesWithNameLike";
+import incrementHandler from "./handlers/increment";
+import setApiKeyHandler from "./handlers/setApiKey";
+import setCandidateNameHandler from "./handlers/setCandidateName";
 
-const dispatchers = [ helloDispatch, fecDispatch ];
+const handlers = [
+  findCandidatesWithNameLikeHandler,
+  incrementHandler,
+  setApiKeyHandler,
+  setCandidateNameHandler
+];
 
-export { dispatchers as default };
+export { handlers as default };
