@@ -3,30 +3,26 @@ import { spy } from "sinon";
 import proxyquire from "proxyquire";
 proxyquire.noCallThru();
 
-const incrementType = "increment type";
-
 describe("helloDispatch", () => {
   let fixture;
   let incrementHandler;
+
+  const state = {
+    "friendly": "reminder"
+  };
   
   beforeEach(() => {
     incrementHandler = spy();
     fixture = proxyquire("../../main/dispatchers/helloDispatch", {
-      "../eventCreators/increment": {
-        type: incrementType
-      },
       "../handlers/increment": incrementHandler
     }).default;
   });
   
   it("routes to increment handler", () => {
-    fixture({ type: incrementType });
-    expect(incrementHandler.calledOnce).to.be.true;
+    const event = { type: "anything" };
+    
+    fixture(state, event);
+    
+    expect(incrementHandler.calledWith(state, event)).to.be.true;
   });
-
-  it("ignores requests it doesn't care about", () => {
-    fixture({ type: "Lfileuhhe48" });
-    expect(incrementHandler.notCalled).to.be.true;
-  });
-
 });

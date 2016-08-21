@@ -10,8 +10,8 @@ const detach = (func) => {
 };
 
 const eventBus = {
-  dispatch(event) {
-    miniSignals.dispatch(event);
+  dispatch(state, event) {
+    miniSignals.dispatch(state, event);
   },
   attach(func) {
     detach(func);
