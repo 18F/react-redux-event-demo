@@ -1,8 +1,12 @@
 import { getState } from "./reduxStore";
-import handlers from "./handlers";
+import Handlers from "./handlers";
+
+const handlerInstances = Handlers.reduce((instances, Handler) => {
+  return instances.concat(new Handler());
+}, []);
 
 const dispatch = (event) => {
-  handlers.forEach((handler) => {
+  handlerInstances.forEach((handler) => {
     const state = getState();
     handler.handle(state, event);
   });

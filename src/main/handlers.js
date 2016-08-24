@@ -4,10 +4,10 @@ import SetApiKeyHandler from "./handlers/setApiKey";
 import SetCandidateNameHandler from "./handlers/setCandidateName";
 
 const handlers = [
-  new FindCandidatesWithNameLikeHandler(),
-  new IncrementHandler(),
-  new SetApiKeyHandler(),
-  new SetCandidateNameHandler()
+  FindCandidatesWithNameLikeHandler,
+  IncrementHandler,
+  SetApiKeyHandler,
+  SetCandidateNameHandler
 ];
 
 export { handlers as default };

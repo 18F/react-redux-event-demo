@@ -15,9 +15,9 @@ describe("eventDispatch", () => {
     getState = stub();
 
     const handlers = [
-      { handle: genericHandler },
-      { handle: genericHandler2 },
-      { handle: genericHandler3 }
+      () => ({ handle: genericHandler }),
+      () => ({ handle: genericHandler2 }),
+      () => ({ handle: genericHandler3 })
     ];
     fixture = proxyquire("../main/eventDispatch", {
       "./handlers": handlers,
