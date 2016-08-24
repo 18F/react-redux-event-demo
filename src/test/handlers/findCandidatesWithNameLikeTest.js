@@ -11,15 +11,15 @@ describe("find candidates with name like handler", () => {
   let fixture;
   let fetchProxy;
   let dispatch;
-  let setApiResultsAction;
-  let setApiResultsError;
+  let setCandidatesAction;
+  let setCandidatesError;
   const findCandidatesWithNameLikeEventType = "ligrkusrgkuhkurghrhg";
 
   beforeEach(() => {
     fetchProxy = stub();
     dispatch = spy();
-    setApiResultsAction = stub();
-    setApiResultsError = stub();
+    setCandidatesAction = stub();
+    setCandidatesError = stub();
     
     const FindCandidatesWithNameLike = proxyquire("../../main/handlers/findCandidatesWithNameLike", {
       "../fetchHandler": fetchProxy,
@@ -29,8 +29,8 @@ describe("find candidates with name like handler", () => {
       "../eventCreators/findCandidatesWithNameLike": {
         type: findCandidatesWithNameLikeEventType
       },
-      "../actionCreators/setApiResults": setApiResultsAction,
-      "../actionCreators/setApiResultsError": setApiResultsError
+      "../actionCreators/setCandidates": setCandidatesAction,
+      "../actionCreators/setCandidatesError": setCandidatesError
     }).default;
 
     fixture = new FindCandidatesWithNameLike();
@@ -61,7 +61,7 @@ describe("find candidates with name like handler", () => {
     fetchProxy
       .withArgs(`https://api.open.fec.gov/v1/names/candidates/?q=${name}&api_key=${apiKey}`)
       .returns(jsonPromise);
-    setApiResultsAction.withArgs(results).returns(action);
+    setCandidatesAction.withArgs(results).returns(action);
 
     return fixture.handle(state, event).then(() => {
       expect(dispatch.calledWith(action)).to.be.true;
@@ -86,7 +86,7 @@ describe("find candidates with name like handler", () => {
     fetchProxy
       .withArgs(`https://api.open.fec.gov/v1/names/candidates/?q=${name}&api_key=${apiKey}`)
       .returns(rejectedPromise);
-    setApiResultsError.returns(errorAction);
+    setCandidatesError.returns(errorAction);
     
     return fixture.handle(state, event).then(() => {
       expect(dispatch.calledWith(errorAction)).to.be.true;

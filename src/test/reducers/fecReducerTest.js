@@ -4,7 +4,7 @@ proxyquire.noCallThru();
 
 const setApiKeyType = "set api key type";
 const setCandidateNameType = "set candidate name type";
-const setApiResultsType = "set api results type";
+const setCandidatesType = "set api results type";
 
 describe("fecReducer", () => {
   describe("set api key", () => {
@@ -100,8 +100,8 @@ describe("fecReducer", () => {
     
     beforeEach(() => {
       fixture = proxyquire("../../main/reducers/fecReducer", {
-        "../actionCreators/setApiResults": {
-          type: setApiResultsType
+        "../actionCreators/setCandidates": {
+          type: setCandidatesType
         }
       }).default;
     });
@@ -117,7 +117,7 @@ describe("fecReducer", () => {
       
       const actual = fixture({
       }, {
-        type: setApiResultsType,
+        type: setCandidatesType,
         results: results
       });
 

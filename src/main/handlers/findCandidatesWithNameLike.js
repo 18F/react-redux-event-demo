@@ -3,8 +3,8 @@ import Handler from "../handler";
 import { dispatch } from "../reduxStore";
 import fetchProxy from "../fetchHandler";
 import { type as eventType } from "../eventCreators/findCandidatesWithNameLike";
-import setApiResultsAction from "../actionCreators/setApiResults";
-import setApiResultsErrorAction from "../actionCreators/setApiResultsError";
+import setCandidatesAction from "../actionCreators/setCandidates";
+import setCandidatesErrorAction from "../actionCreators/setCandidatesError";
 
 const hitApi = (state, event) => {
   const candidateName = state.fec.candidateName;
@@ -16,12 +16,12 @@ const hitApi = (state, event) => {
 };
 
 const processJsonResults = (jsonResults) => {
-  const action = setApiResultsAction(jsonResults.results);
+  const action = setCandidatesAction(jsonResults.results);
   dispatch(action);
 };
 
 const handleError = () => {
-  const action = setApiResultsErrorAction();
+  const action = setCandidatesErrorAction();
   dispatch(action);
 };
 

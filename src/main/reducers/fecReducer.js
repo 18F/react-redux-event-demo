@@ -1,7 +1,7 @@
 import assign from "lodash.assign";
 import { type as setApiKeyType } from "../actionCreators/setApiKey";
 import { type as setCandidateNameType } from "../actionCreators/setCandidateName";
-import { type as setCandidatesType } from "../actionCreators/setApiResults";
+import { type as setCandidatesType } from "../actionCreators/setCandidates";
 
 const defaultState = () => {
   return { hasResults: false };
