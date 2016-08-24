@@ -21,7 +21,7 @@ describe("find candidates with name like handler", () => {
     setApiResultsAction = stub();
     setApiResultsError = stub();
     
-    fixture = proxyquire("../../main/handlers/findCandidatesWithNameLike", {
+    const FindCandidatesWithNameLike = proxyquire("../../main/handlers/findCandidatesWithNameLike", {
       "../fetchHandler": fetchProxy,
       "../reduxStore": {
         dispatch: dispatch
@@ -32,6 +32,8 @@ describe("find candidates with name like handler", () => {
       "../actionCreators/setApiResults": setApiResultsAction,
       "../actionCreators/setApiResultsError": setApiResultsError
     }).default;
+
+    fixture = new FindCandidatesWithNameLike();
   });
 
   it("fetches all the o'neals from the api and dispatches an action with the results", () => {
@@ -61,7 +63,7 @@ describe("find candidates with name like handler", () => {
       .returns(jsonPromise);
     setApiResultsAction.withArgs(results).returns(action);
 
-    return fixture(state, event).then(() => {
+    return fixture.handle(state, event).then(() => {
       expect(dispatch.calledWith(action)).to.be.true;
     });    
   });
@@ -86,7 +88,7 @@ describe("find candidates with name like handler", () => {
       .returns(rejectedPromise);
     setApiResultsError.returns(errorAction);
     
-    return fixture(state, event).then(() => {
+    return fixture.handle(state, event).then(() => {
       expect(dispatch.calledWith(errorAction)).to.be.true;
     });
   });
@@ -104,7 +106,7 @@ describe("find candidates with name like handler", () => {
       type: findCandidatesWithNameLikeEventType + "sfijlsijfs"
     };
 
-    const actual = fixture(state, event); 
+    const actual = fixture.handle(state, event); 
 
     return expect(actual).to.eventually.equal("no-op");
   });

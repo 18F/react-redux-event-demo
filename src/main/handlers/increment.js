@@ -1,4 +1,4 @@
-import eventHandler from "./handler";
+import Handler from "../handler";
 
 import { dispatch } from "../reduxStore";
 import incrementAction from "../actionCreators/increment";
@@ -8,4 +8,10 @@ const increment = (state, event) => {
   dispatch(incrementAction());
 };
 
-export default eventHandler(eventType, increment);
+class Increment extends Handler {
+  constructor() {
+    super(eventType, increment);
+  }
+};
+
+export default Increment;

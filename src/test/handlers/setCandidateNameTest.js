@@ -20,7 +20,7 @@ describe("set candidate name event handler", () => {
     dispatch = spy();
     setCandidateNameActionCreatorStub = stub();
 
-    fixture = proxyquire("../../main/handlers/setCandidateName", {
+    const SetCandidateName = proxyquire("../../main/handlers/setCandidateName", {
       "../reduxStore": {
         dispatch: dispatch
       },
@@ -29,6 +29,7 @@ describe("set candidate name event handler", () => {
       },
       "../actionCreators/setCandidateName": setCandidateNameActionCreatorStub
     }).default;
+    fixture = new SetCandidateName();
   });
   
   it("dispatches set candidate name action to store ", () => {
@@ -39,7 +40,7 @@ describe("set candidate name event handler", () => {
     const setCandidateNameAction = { action: "here" };
     setCandidateNameActionCreatorStub.withArgs(candidateName).returns(setCandidateNameAction);
     
-    const actual = fixture(state, event);
+    const actual = fixture.handle(state, event);
 
     expect(dispatch.calledOnce).to.be.true;
     expect(dispatch.calledWith(setCandidateNameAction)).to.be.true;
@@ -52,7 +53,7 @@ describe("set candidate name event handler", () => {
       name: "Inigo Montoya"
     };
 
-    const actual = fixture(state, event);
+    const actual = fixture.handle(state, event);
 
     expect(actual).to.eventually.equal("no-op");
   });

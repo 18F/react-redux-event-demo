@@ -1,13 +1,13 @@
-import findCandidatesWithNameLikeHandler from "./handlers/findCandidatesWithNameLike";
-import incrementHandler from "./handlers/increment";
-import setApiKeyHandler from "./handlers/setApiKey";
-import setCandidateNameHandler from "./handlers/setCandidateName";
+import FindCandidatesWithNameLikeHandler from "./handlers/findCandidatesWithNameLike";
+import IncrementHandler from "./handlers/increment";
+import SetApiKeyHandler from "./handlers/setApiKey";
+import SetCandidateNameHandler from "./handlers/setCandidateName";
 
 const handlers = [
-  findCandidatesWithNameLikeHandler,
-  incrementHandler,
-  setApiKeyHandler,
-  setCandidateNameHandler
+  new FindCandidatesWithNameLikeHandler(),
+  new IncrementHandler(),
+  new SetApiKeyHandler(),
+  new SetCandidateNameHandler()
 ];
 
 export { handlers as default };

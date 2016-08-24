@@ -1,4 +1,4 @@
-import eventHandler from "./handler";
+import Handler from "../handler";
 
 import { dispatch } from "../reduxStore";
 import setApiKeyAction from "../actionCreators/setApiKey";
@@ -9,4 +9,10 @@ const setApiKey = (state, event) => {
   dispatch(setApiKeyAction(apiKey));
 };
 
-export default eventHandler(eventType, setApiKey);
+class SetApiKey extends Handler {
+  constructor() {
+    super(eventType, setApiKey);
+  }
+};
+
+export default SetApiKey;

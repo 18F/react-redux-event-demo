@@ -1,4 +1,4 @@
-import eventHandler from "./handler";
+import Handler from "../handler";
 
 import { dispatch } from "../reduxStore";
 import fetchProxy from "../fetchHandler";
@@ -25,4 +25,10 @@ const handleError = () => {
   dispatch(action);
 };
 
-export default eventHandler(eventType, hitApi);
+class FindCandidatesWithNameLike extends Handler {
+  constructor() {
+    super(eventType, hitApi);
+  }
+};
+
+export default FindCandidatesWithNameLike;

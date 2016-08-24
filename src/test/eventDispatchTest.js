@@ -3,7 +3,7 @@ import { spy, stub } from "sinon";
 import proxyquire from "proxyquire";
 proxyquire.noCallThru();
 
-describe("eventDispatch integration test", () => {
+describe("eventDispatch", () => {
   let fixture;
   let getState;
   let genericHandler, genericHandler2, genericHandler3;
@@ -14,7 +14,11 @@ describe("eventDispatch integration test", () => {
     genericHandler3 = spy();
     getState = stub();
 
-    const handlers = [ genericHandler, genericHandler2, genericHandler3 ];
+    const handlers = [
+      { handle: genericHandler },
+      { handle: genericHandler2 },
+      { handle: genericHandler3 }
+    ];
     fixture = proxyquire("../main/eventDispatch", {
       "./handlers": handlers,
       "./reduxStore": {
@@ -23,7 +27,7 @@ describe("eventDispatch integration test", () => {
     }).default;
   });
   
-  it("presents events to registered dispatchers", () => {
+  it("presents events to registered handlers", () => {
     const event = { type: "hello", value: "world" };
     const state = {
       oblivious: {

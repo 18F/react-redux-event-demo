@@ -17,7 +17,7 @@ describe("set api key event handler", () => {
     dispatch = spy();
     setApiKeyActionCreatorStub = stub();
 
-    fixture = proxyquire("../../main/handlers/setApiKey", {
+    const SetApiKey = proxyquire("../../main/handlers/setApiKey", {
       "../reduxStore": {
         dispatch: dispatch
       },
@@ -26,6 +26,8 @@ describe("set api key event handler", () => {
       },
       "../actionCreators/setApiKey": setApiKeyActionCreatorStub
     }).default;
+
+    fixture = new SetApiKey();
   });
   
   it("dispatches set api key action to store ", () => {
@@ -36,7 +38,7 @@ describe("set api key event handler", () => {
     const setApiKeyAction = { action: "here" };
     setApiKeyActionCreatorStub.withArgs(apiKey).returns(setApiKeyAction);
 
-    const actual = fixture(state, event);
+    const actual = fixture.handle(state, event);
     
     expect(dispatch.calledOnce).to.be.true;
     expect(dispatch.calledWith(setApiKeyAction)).to.be.true;
@@ -49,7 +51,7 @@ describe("set api key event handler", () => {
       apiKey: apiKey
     };
 
-    const actual = fixture(state, event);
+    const actual = fixture.handle(state, event);
 
     expect(actual).to.eventually.equal("no-op");
   });

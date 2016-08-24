@@ -15,7 +15,7 @@ describe("increment event handler", () => {
   beforeEach(() => {
     dispatch = stub();
 
-    fixture = proxyquire("../../main/handlers/increment", {
+    const Increment = proxyquire("../../main/handlers/increment", {
       "../reduxStore": {
         dispatch: dispatch
       },
@@ -24,6 +24,8 @@ describe("increment event handler", () => {
       },
       "../actionCreators/increment": incrementAction
     }).default;
+
+    fixture = new Increment();
   });
   
   it("dispatches action to store ", () => {
@@ -36,7 +38,7 @@ describe("increment event handler", () => {
 
     dispatch.withArgs(incrementActionInstance).returns(incrementActionInstance);
 
-    const actual = fixture(state, event);
+    const actual = fixture.handle(state, event);
    
     expect(dispatch.calledOnce).to.be.true;
     expect(dispatch.calledWith(incrementActionInstance)).to.be.true;
@@ -52,7 +54,7 @@ describe("increment event handler", () => {
       type: incrementType + "2597iv8"
     };
 
-    const actual = fixture(state, event); 
+    const actual = fixture.handle(state, event); 
 
     return expect(actual).to.eventually.equal("no-op");
   });
