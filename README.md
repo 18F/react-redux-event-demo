@@ -15,15 +15,13 @@ Use react-redux to make changes in the Redux state update the properties sent to
 
 Keep views simple by never putting state in the views. We don't need stateful views; our life is better when the rendering of a view is dependent entirely upon the immutable properties given to render. Yes, we need full React components to wire the react-redux plumbing. Everywhere else, favor stateless functional components. Extract subviews where it makes sense.
 
-Use a single bus for all events. Use event dispatchers to map events placed on the bus to the proper event handlers; each dispatcher may elect to react to any event much as a Redux reducer may elect to change the state based on any action. Avoid large handlers with too many responsibilities as multiple handlers can respond to an event. Handlers may dispatch actions to the Redux store or fetch data from an API. 
-
-Hide the particular event library implementation behind a small eventBus interface.
+Use a single event bus for all events configured with registered event handlers. Make event handlers implement a consistent interface to declare what event they recognize, how they read the Redux state, and how they specify the particular function which processes the event. Avoid large handlers with too many responsibilities as multiple handlers can respond to an event. Handlers may dispatch actions to the Redux store or fetch data from an API. 
 
 Promises are our friend. Fetch improves upon the long-used ajax request mechanisms. For now, we must polyfill.
 
 ## What does it do?
 
-It can count.
+It can count. It can query and display data from a very small part of the [FEC API](https://api.open.fec.gov/developers/). 
 
 ## How to build and use
 
@@ -33,7 +31,7 @@ Clone the repo. Once you have it...
 
 `npm run build` creates the javascript bundle, this time minified and without sourcemaps.
 
-`npm test` runs all of the mocha tests. Most of these should be unit tests with some integration tests when necessary. We're not shooting for 100% code coverage (_congratulations! you've copied your configuration!_ or _you've copied the DOM structure again, yeah!_), but we should have very good reasons when we have uncovered code. Since we're transpiling our imports to CommonJS requires with babel, we can use proxyquire to specify the exact behavior of our dependencies when writing tests.
+`npm test` runs all of the mocha tests. Most of these should be unit tests with some integration tests when necessary. We're not expecting to get 100% code coverage (_congratulations! you've copied your configuration!_ or _you've copied the DOM structure again, yeah!_), but we want to get as close to it as we can and should have very good reasons when we have uncovered code. Since we're transpiling our imports to CommonJS requires with babel, we can use proxyquire to specify the exact behavior of our dependencies when writing tests.
 
 `npm run coverage` runs the tests and creates the code coverage report to be found at `coverage/index.html`
 
