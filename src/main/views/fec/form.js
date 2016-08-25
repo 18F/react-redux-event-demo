@@ -1,9 +1,9 @@
 import React from "react";
 
-import eventDispatch from "../eventDispatch";
-import setApiKey from "../eventCreators/setApiKey";
-import setCandidateName from "../eventCreators/setCandidateName";
-import findCandidatesWithNameLike from "../eventCreators/findCandidatesWithNameLike";
+import eventDispatch from "../../eventDispatch";
+import setApiKey from "../../eventCreators/setApiKey";
+import setCandidateName from "../../eventCreators/setCandidateName";
+import findCandidatesWithNameLike from "../../eventCreators/findCandidatesWithNameLike";
 
 const onKeyUpSetApiKey = (event) => {
   const apiKey = event.target.value;

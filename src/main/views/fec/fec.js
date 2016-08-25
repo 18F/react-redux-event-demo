@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import Results from "./fecResults";
-import Form from "./fecForm";
+import Candidates from "./candidates";
+import Form from "./form";
 
 const fec = ({ apiKey, candidates }) => {
   return (
@@ -21,7 +21,7 @@ const emitResults = (candidates) => {
   const hasResults = candidates;
 
   if (hasResults) {
-    return <Results results={ candidates }/>;
+    return <Candidates candidates={ candidates }/>;
   }
 };
 

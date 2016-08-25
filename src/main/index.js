@@ -6,8 +6,8 @@ import initializePromisePolyfill from "./promiseProxy";
 import ready from "./ready";
 import store from "./reduxStore";
 
-import Hello from "./views/hello";
-import Fec from "./views/fec";
+import Hello from "./views/hello/hello.js";
+import Fec from "./views/fec/fec.js";
 
 const init = () => {
   var appContainerElement = document.querySelector("div[data-app]");

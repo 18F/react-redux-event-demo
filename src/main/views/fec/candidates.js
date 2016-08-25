@@ -1,6 +1,6 @@
 import React from "react";
 
-const fecResults = (props) => {
+const candidates = (props) => {
   return (
     <div>
       <p>No results</p>
@@ -8,4 +8,4 @@ const fecResults = (props) => {
   );
 };
 
-export default fecResults;
+export default candidates;
