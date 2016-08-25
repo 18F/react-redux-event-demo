@@ -21,15 +21,15 @@ const triggerHitApi = (event) => {
   event.preventDefault();
 };
 
-const fecForm = (props) => {
+const fecForm = ({ apiKey, name }) => {
   return (
     <form>
       <label htmlFor="apiKey">API key</label>
-      <input name="apiKey" id="apiKey" type="text" defaultValue={ props.apiKey }
+      <input name="apiKey" id="apiKey" type="text" defaultValue={ apiKey }
              onKeyUp={ onKeyUpSetApiKey }/>
       <label htmlFor="candidateName">candidate name</label>
       <input name="candidateName" id="candidateName" type="text"
-             defaultValue={ props.name } onKeyUp={ onKeyUpSetCandidateName }/>
+             defaultValue={ name } onKeyUp={ onKeyUpSetCandidateName }/>
       <button onClick={ triggerHitApi }>trigger request</button>
     </form>
   );

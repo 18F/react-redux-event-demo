@@ -4,28 +4,27 @@ import { connect } from "react-redux";
 import Results from "./fecResults";
 import Form from "./fecForm";
 
-const fec = (props) => {
+const fec = ({ apiKey, candidates }) => {
   return (
     <div>
-      { emitForm(props) }
+      { emitForm(apiKey) }
+      { emitResults(candidates) }
     </div>
   );
 };
 
-const emitForm = (props) => {
-  return <Form apiKey={ props.apiKey }/>;
+const emitForm = (apiKey) => {
+  return <Form apiKey={ apiKey }/>;
 };
 
-const emitResults = (props) => {
-  const hasResults = props.hasResults;
+const emitResults = (candidates) => {
+  const hasResults = candidates;
 
   if (hasResults) {
-    return <Results results={ props.results }/>;
+    return <Results results={ candidates }/>;
   }
 };
 
 export default connect(state => {
-  return {
-    fec: state.fec
-  };
+  return state.fec;
 })(fec);

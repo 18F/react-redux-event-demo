@@ -8,8 +8,7 @@ const increment = () => {
   eventDispatch(incrementEvent());
 };
 
-const hello = (props) => {
-  const count = props.hello.count;
+const hello = ({ count }) => {
   return (
       <div>Hello world: { count }
         <hr/>
@@ -19,7 +18,5 @@ const hello = (props) => {
 };
 
 export default connect(state => {
-  return {
-    hello: state.hello
-  };
+  return state.hello;
 })(hello);
