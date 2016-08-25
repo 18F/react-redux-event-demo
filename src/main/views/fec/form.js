@@ -16,7 +16,7 @@ const onKeyUpSetCandidateName = (event) => {
 };
 
 
-const triggerHitApi = (event) => {
+const triggerFindCandidatesWithNameLike = (event) => {
   eventDispatch(findCandidatesWithNameLike());
   event.preventDefault();
 };
@@ -30,7 +30,7 @@ const fecForm = ({ apiKey, name }) => {
       <label htmlFor="candidateName">candidate name</label>
       <input name="candidateName" id="candidateName" type="text"
              defaultValue={ name } onKeyUp={ onKeyUpSetCandidateName }/>
-      <button onClick={ triggerHitApi }>trigger request</button>
+      <button onClick={ triggerFindCandidatesWithNameLike }>search</button>
     </form>
   );
 };
