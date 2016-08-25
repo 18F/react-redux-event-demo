@@ -25,9 +25,11 @@ It can count. It can query and display data from a very small part of the [FEC A
 
 ## How to build and use
 
+You need an API key from [data.gov](https://api.data.gov/signup/).
+
 Clone the repo. Once you have it...
 
-`npm run build-dev` creates the unminified javascript bundle with sourcemaps. Point your browser at [index.html](index.html) and go.
+`npm run build-dev` creates the unminified javascript bundle with sourcemaps. Point your browser at [index.html](index.html) and go. Fill in the form with your API key from [data.gov](https://api.data.gov/signup/).
 
 `npm run build` creates the javascript bundle, this time minified and without sourcemaps.
 
