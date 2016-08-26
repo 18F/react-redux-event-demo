@@ -6,7 +6,7 @@ import initializePromisePolyfill from "./promiseProxy";
 import ready from "./ready";
 import store from "./reduxStore";
 
-import Hello from "./views/hello/hello.js";
+import Hello from "./views/hello/helloContainer.js";
 import Fec from "./views/fec/fec.js";
 
 const init = () => {

@@ -1,7 +1,7 @@
 React-Redux-Event Demo
 =====
 
-A basic technology demo of some javascript frameworks in a purely client application. Written in ES6/ES2015, built with npm/browserify, transpiled to general 2016 browser support with babel, tested with mocha/proxyquire/chai/sinon, code coverage with istanbul.
+A basic technology demo of some javascript frameworks in a purely client application. Written in ES6/ES2015, built with npm/browserify, transpiled to general 2016 browser support with babel, tested with mocha/proxyquire/chai/sinon/enzyme, code coverage with istanbul.
 
 ## Philosophy
 

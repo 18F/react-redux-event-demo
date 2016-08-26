@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 
 import eventDispatch from "../../eventDispatch";
 import incrementEvent from "../../eventCreators/increment";
@@ -17,6 +16,4 @@ const hello = ({ count }) => {
   );
 };
 
-export default connect(state => {
-  return state.hello;
-})(hello);
+export default hello;
