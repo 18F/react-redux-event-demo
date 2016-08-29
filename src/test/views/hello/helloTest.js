@@ -9,7 +9,7 @@ const setApiKeyType = "set api key type";
 const setCandidateNameType = "set candidate name type";
 const setCandidatesType = "set api results type";
 
-describe("candidates view", () => {
+describe("hello view", () => {
   let Fixture;
   
   let eventDispatch;
