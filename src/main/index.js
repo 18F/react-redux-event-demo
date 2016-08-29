@@ -7,7 +7,7 @@ import ready from "./ready";
 import store from "./reduxStore";
 
 import Hello from "./views/hello/helloContainer.js";
-import Fec from "./views/fec/fec.js";
+import Fec from "./views/fec/fecContainer.js";
 
 const init = () => {
   var appContainerElement = document.querySelector("div[data-app]");

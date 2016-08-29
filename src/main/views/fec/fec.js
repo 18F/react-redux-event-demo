@@ -1,5 +1,4 @@
 import React from "react";
-import { connect } from "react-redux";
 
 import Candidates from "./candidates";
 import Form from "./form";
@@ -25,6 +24,4 @@ const emitResults = (candidates) => {
   }
 };
 
-export default connect(state => {
-  return state.fec;
-})(fec);
+export default fec;
