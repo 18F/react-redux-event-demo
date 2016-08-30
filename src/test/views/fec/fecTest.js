@@ -1,7 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { expect } from "chai";
-import { spy, stub } from "sinon";
 import proxyquire from "proxyquire";
 proxyquire.noCallThru();
 
