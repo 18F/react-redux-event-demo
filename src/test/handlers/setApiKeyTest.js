@@ -1,58 +1,45 @@
 import { expect } from "chai";
-import { spy, stub } from "sinon";
+import { stub } from "sinon";
 import proxyquire from "proxyquire";
+
 proxyquire.noCallThru();
 
 describe("set api key event handler", () => {
   let fixture;
   let dispatch;
-  let setApiKeyActionCreatorStub;
-  const setApiKeyType = "setApiKeyType";
+  let setApiKeyActionCreator;
+
   const apiKey = "API Key f88ij8u9jjfgsf";
   const state = {
     "words": "have meaning"
   };
   
   beforeEach(() => {
-    dispatch = spy();
-    setApiKeyActionCreatorStub = stub();
+    dispatch = stub();
+    setApiKeyActionCreator = stub();
 
-    const SetApiKey = proxyquire("../../main/handlers/setApiKey", {
+    fixture = proxyquire("../../main/handlers/setApiKey", {
       "../reduxStore": {
         dispatch: dispatch
       },
-      "../eventCreators/setApiKey": {
-        type: setApiKeyType
-      },
-      "../actionCreators/setApiKey": setApiKeyActionCreatorStub
+      "../actionCreators/setApiKey": setApiKeyActionCreator
     }).default;
-
-    fixture = new SetApiKey();
   });
   
-  it("dispatches set api key action to store ", () => {
+  it("dispatches set api key action to store when given a compatible event", () => {
     const event = {
-      type: setApiKeyType,
       apiKey: apiKey
     };
     const setApiKeyAction = { action: "here" };
-    setApiKeyActionCreatorStub.withArgs(apiKey).returns(setApiKeyAction);
-
-    const actual = fixture.handle(state, event);
-    
-    expect(dispatch.calledOnce).to.be.true;
-    expect(dispatch.calledWith(setApiKeyAction)).to.be.true;
-    expect(actual).to.eventually.equal(setApiKeyAction);
-  });
-
-  it("ignores irrelevant events", () => {
-    const event = {
-      type: setApiKeyType + "some other string",
-      apiKey: apiKey
+    const dispatchedAction = {
+      dispatchedAction: "output, whatever it might be"
     };
+    
+    setApiKeyActionCreator.withArgs(apiKey).returns(setApiKeyAction);
+    dispatch.withArgs(setApiKeyAction).returns(dispatchedAction);
+    
+    const actual = fixture(state, event);
 
-    const actual = fixture.handle(state, event);
-
-    expect(actual).to.eventually.equal("no-op");
+    expect(actual).to.equal(dispatchedAction);
   });
 });

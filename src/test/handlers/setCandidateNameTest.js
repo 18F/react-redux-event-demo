@@ -1,61 +1,43 @@
-import chai, { expect } from "chai";
-import chaiAsPromised from "chai-as-promised";
-import { spy, stub } from "sinon";
+import { expect } from "chai";
+import { stub } from "sinon";
 import proxyquire from "proxyquire";
 
 proxyquire.noCallThru();
-chai.use(chaiAsPromised);
 
 describe("set candidate name event handler", () => {
   let fixture;
   let dispatch;
+  let setCandidateNameActionCreator;
+
   const setCandidateNameType = "candidate name type here";
   const candidateName = "My Name";
-  let setCandidateNameActionCreatorStub;
   const state = {
     "world": "told me hello the other day"
   };
   
   beforeEach(() => {
-    dispatch = spy();
-    setCandidateNameActionCreatorStub = stub();
+    dispatch = stub();
+    setCandidateNameActionCreator = stub();
 
-    const SetCandidateName = proxyquire("../../main/handlers/setCandidateName", {
+    fixture = proxyquire("../../main/handlers/setCandidateName", {
       "../reduxStore": {
         dispatch: dispatch
       },
-      "../eventCreators/setCandidateName": {
-        type: setCandidateNameType
-      },
-      "../actionCreators/setCandidateName": setCandidateNameActionCreatorStub
+      "../actionCreators/setCandidateName": setCandidateNameActionCreator
     }).default;
-    fixture = new SetCandidateName();
   });
   
-  it("dispatches set candidate name action to store ", () => {
+  it("dispatches set candidate name action to store when given a compatible event", () => {
     const event = {
-      type: setCandidateNameType,
       name: candidateName
     };
     const setCandidateNameAction = { action: "here" };
-    setCandidateNameActionCreatorStub.withArgs(candidateName).returns(setCandidateNameAction);
-    
-    const actual = fixture.handle(state, event);
+    const dispatchedAction = { la: "dee da" };
+    setCandidateNameActionCreator.withArgs(candidateName).returns(setCandidateNameAction);
+    dispatch.withArgs(setCandidateNameAction).returns(dispatchedAction);
 
-    expect(dispatch.calledOnce).to.be.true;
-    expect(dispatch.calledWith(setCandidateNameAction)).to.be.true;
-    expect(actual).to.eventually.equal(setCandidateNameAction);
+    const actual = fixture(state, event);
+
+    expect(actual).to.equal(dispatchedAction);
   });
-
-  it("ignores irrelevant events", () => {
-    const event = {
-      type: setCandidateNameType + "some other string",
-      name: "Inigo Montoya"
-    };
-
-    const actual = fixture.handle(state, event);
-
-    expect(actual).to.eventually.equal("no-op");
-  });
-
 });

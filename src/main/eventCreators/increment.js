@@ -1,7 +1,8 @@
 const type = "increment";
 
-export { type };
-export default () => ({
+const increment = () => ({
   type: type
 });
 
+export { type };
+export default increment;

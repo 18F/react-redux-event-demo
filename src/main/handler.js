@@ -1,15 +1,15 @@
-class Handler {
-  constructor(eventType, callback) {
-    this.eventType = eventType;
-    this.callback = callback;
-  }
-  handle(state, event) {
-    if (event.type !== this.eventType) {
-      return Promise.resolve("no-op");
+const ignoredPromiseResolution = "no-op";
+const resolvedPromise = Promise.resolve(ignoredPromiseResolution);
+
+const makeHandler = (eventType, callback) => {
+  return (state, event) => {
+    if (event.type !== eventType) {
+      return resolvedPromise;
     }
     
-    return Promise.resolve(this.callback(state, event));
-  }
+    return Promise.resolve(callback(state, event));
+  };
 };
 
-export default Handler;
+export default makeHandler;
+export { ignoredPromiseResolution as ignored };

@@ -1,10 +1,9 @@
-const setApiKeyType = "setApiKey";
+const type = "setApiKey";
 
 const setApiKey = (apiKey) => ({
-  type: setApiKeyType,
+  type: type,
   apiKey: apiKey
 });
 
-export { setApiKeyType as type }; 
-
+export { type }; 
 export default setApiKey;

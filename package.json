@@ -4,6 +4,7 @@
   "dependencies": {
     "es6-promise": "^3.2.1",
     "lodash.assign": "^4.0.9",
+    "lodash.foreach": "^4.5.0",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
     "react-redux": "^4.4.5",

@@ -6,16 +6,18 @@ proxyquire.noCallThru();
 describe("increment event handler", () => {
   let fixture;
   let dispatch;
+
   const incrementType = "increment type goes here";
   const incrementActionInstance = {
     hello: "world"
   };
+  
   const incrementAction = () => incrementActionInstance;
   
   beforeEach(() => {
     dispatch = stub();
 
-    const Increment = proxyquire("../../main/handlers/increment", {
+    fixture = proxyquire("../../main/handlers/increment", {
       "../reduxStore": {
         dispatch: dispatch
       },
@@ -24,39 +26,17 @@ describe("increment event handler", () => {
       },
       "../actionCreators/increment": incrementAction
     }).default;
-
-    fixture = new Increment();
   });
   
   it("dispatches action to store ", () => {
-    const state = {
-      whatever: "you say"
-    };
-    const event = {
-      type: incrementType
-    };
+    const state = { };
+    const event = { };
+    const dispatchedAction = { "dispatcho": "gazpacho" };
+    
+    dispatch.withArgs(incrementActionInstance).returns(dispatchedAction);
 
-    dispatch.withArgs(incrementActionInstance).returns(incrementActionInstance);
+    const actual = fixture(state, event);
 
-    const actual = fixture.handle(state, event);
-   
-    expect(dispatch.calledOnce).to.be.true;
-    expect(dispatch.calledWith(incrementActionInstance)).to.be.true;
-
-    expect(actual).to.eventually.equal(incrementActionInstance);
+    expect(actual).to.equal(dispatchedAction);
   });
-  
-  it("ignores irrelevant events", () => {
-    const state = {
-      hello: "world"
-    };
-    const event = {
-      type: incrementType + "2597iv8"
-    };
-
-    const actual = fixture.handle(state, event); 
-
-    return expect(actual).to.eventually.equal("no-op");
-  });
-
 });

@@ -1,53 +1,47 @@
 import { Promise } from "es6-promise";
-import chai, { expect, assert } from "chai";
+import chai, { expect } from "chai";
 import chaiAsPromised from "chai-as-promised";
 import { spy, stub } from "sinon";
 import proxyquire from "proxyquire";
 
-proxyquire.noCallThru();
 chai.use(chaiAsPromised);
+proxyquire.noCallThru();
 
 describe("find candidates with name like handler", () => {
   let fixture;
   let fetchProxy;
   let dispatch;
   let setCandidatesAction;
-  let setCandidatesError;
-  const findCandidatesWithNameLikeEventType = "ligrkusrgkuhkurghrhg";
 
+  const apiKey = "APIKEY";
+  const name = "o'neal";
+  const state = {
+    fec: {
+      apiKey: apiKey,
+      candidateName: name
+    }
+  };
+
+  const errorAction = { type: "fail fail", filler: "lots" };
+  const setCandidatesError = () => errorAction;
+  
   beforeEach(() => {
     fetchProxy = stub();
-    dispatch = spy();
+    dispatch = stub();
     setCandidatesAction = stub();
-    setCandidatesError = stub();
     
-    const FindCandidatesWithNameLike = proxyquire("../../main/handlers/findCandidatesWithNameLike", {
+    fixture = proxyquire("../../main/handlers/findCandidatesWithNameLike", {
       "../fetchHandler": fetchProxy,
       "../reduxStore": {
         dispatch: dispatch
       },
-      "../eventCreators/findCandidatesWithNameLike": {
-        type: findCandidatesWithNameLikeEventType
-      },
       "../actionCreators/setCandidates": setCandidatesAction,
       "../actionCreators/setCandidatesError": setCandidatesError
     }).default;
-
-    fixture = new FindCandidatesWithNameLike();
   });
 
   it("fetches all the o'neals from the api and dispatches an action with the results", () => {
-    const apiKey = "APIKEY";
-    const name = "o'neal";
-    const state = {
-      fec: {
-        apiKey: apiKey,
-        candidateName: name
-      }
-    };
-    const event = {
-      type: findCandidatesWithNameLikeEventType
-    };
+    const event = { };
     
     const results = {
       "Hi": "world"
@@ -56,59 +50,34 @@ describe("find candidates with name like handler", () => {
       api_version: 2.0,
       results: results
     };
-    const jsonPromise =  Promise.resolve(apiResponse);
+    const jsonPromise = Promise.resolve(apiResponse);
     const action = { i: "have results and you don't" };
-    fetchProxy
-      .withArgs(`https://api.open.fec.gov/v1/names/candidates/?q=${name}&api_key=${apiKey}`)
-      .returns(jsonPromise);
+    const success = "something.";
+    wireFetchProxyWithResponsePromise(jsonPromise);
     setCandidatesAction.withArgs(results).returns(action);
+    dispatch.withArgs(action).returns(success);
+    
+    const actual = fixture(state, event);
 
-    return fixture.handle(state, event).then(() => {
-      expect(dispatch.calledWith(action)).to.be.true;
-    });    
+    expect(actual).to.eventually.equal(success);
   });
 
   it("fails to fetch anything from the api and dispatches an action as an error", () => {
-    const apiKey = "APIKEY";
-    const name = "o'neal";
-    const state = {
-      fec: {
-        apiKey: apiKey,
-        candidateName: name
-      }
-    };
-    const event = {
-      type: findCandidatesWithNameLikeEventType
-    };
+    const event = { };
 
     const rejectedPromise =  Promise.reject(new Error("no network, or bad response"));
-    const errorAction = { type: "fail fail", filler: "lots" };
+    const failure = "failed. error. whatever.";
+    wireFetchProxyWithResponsePromise(rejectedPromise);
+    dispatch.withArgs(errorAction).returns(failure);
+    
+    const actual = fixture(state, event);
+
+    expect(actual).to.eventually.equal(failure);
+  });
+
+  const wireFetchProxyWithResponsePromise = (responsePromise) => {
     fetchProxy
       .withArgs(`https://api.open.fec.gov/v1/names/candidates/?q=${name}&api_key=${apiKey}`)
-      .returns(rejectedPromise);
-    setCandidatesError.returns(errorAction);
-    
-    return fixture.handle(state, event).then(() => {
-      expect(dispatch.calledWith(errorAction)).to.be.true;
-    });
-  });
-
-  it("ignores irrelevant events", () => {
-    const apiKey = "APIKEY";
-    const name = "o'neal";
-    const state = {
-      fec: {
-        apiKey: apiKey,
-        candidateName: name
-      }
-    };
-    const event = {
-      type: findCandidatesWithNameLikeEventType + "sfijlsijfs"
-    };
-
-    const actual = fixture.handle(state, event); 
-
-    return expect(actual).to.eventually.equal("no-op");
-  });
-
+      .returns(responsePromise);
+  };
 });

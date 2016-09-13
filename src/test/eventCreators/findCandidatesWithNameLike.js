@@ -6,7 +6,7 @@ const findCandidatesWithNameLikeType = "findCandidatesWithNameLike";
 
 describe("findCandidatesWithNameLike eventCreator", () => {
 
-  it("constructs properly", () => {
+  it("constructs as expected", () => {
     const actual = fixture();
 
     expect(actual).to.deep.equal({

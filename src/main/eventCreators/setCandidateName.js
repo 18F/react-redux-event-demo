@@ -1,10 +1,9 @@
-const setCandidateNameType = "setCandidateName";
+const type = "setCandidateName";
 
 const setCandidateName = (name) => ({
-  type: setCandidateNameType,
+  type: type,
   name: name
 });
 
-export { setCandidateNameType as type }; 
-
+export { type }; 
 export default setCandidateName;

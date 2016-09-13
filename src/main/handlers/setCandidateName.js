@@ -1,18 +1,9 @@
-import Handler from "../handler";
-
 import { dispatch } from "../reduxStore";
 import setCandidateNameAction from "../actionCreators/setCandidateName";
-import { type as eventType } from "../eventCreators/setCandidateName";
 
-const handler = (state, event) => {
-  const name = event.name;
-  dispatch(setCandidateNameAction(name));
+const setCandidateName = (state, { name }) => {
+  const action = setCandidateNameAction(name);
+  return dispatch(action);
 };
 
-class SetCandidateName extends Handler {
-  constructor() {
-    super(eventType, handler);
-  }
-};
-
-export default SetCandidateName;
+export default setCandidateName;
