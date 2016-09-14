@@ -30,7 +30,7 @@ describe("find candidates with name like handler", () => {
     dispatch = stub();
     setCandidatesAction = stub();
     
-    fixture = proxyquire("../../main/handlers/findCandidatesWithNameLike", {
+    fixture = proxyquire("../../main/eventHandlers/findCandidatesWithNameLike", {
       "../fetchHandler": fetchProxy,
       "../reduxStore": {
         dispatch: dispatch

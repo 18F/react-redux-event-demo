@@ -19,7 +19,7 @@ describe("set candidate name event handler", () => {
     dispatch = stub();
     setCandidateNameActionCreator = stub();
 
-    fixture = proxyquire("../../main/handlers/setCandidateName", {
+    fixture = proxyquire("../../main/eventHandlers/setCandidateName", {
       "../reduxStore": {
         dispatch: dispatch
       },

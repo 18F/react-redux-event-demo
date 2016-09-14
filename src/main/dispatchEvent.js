@@ -1,6 +1,6 @@
-import { getDispatchForHandlers } from "./handler";
+import { getDispatchForHandlers } from "./eventHandler";
 import { getState } from "./reduxStore";
-import typeHandlerMap from "./handlers";
+import typeHandlerMap from "./eventHandlers";
 
 const dispatchEvent = getDispatchForHandlers(typeHandlerMap, getState);
 

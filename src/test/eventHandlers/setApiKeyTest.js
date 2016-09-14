@@ -18,7 +18,7 @@ describe("set api key event handler", () => {
     dispatch = stub();
     setApiKeyActionCreator = stub();
 
-    fixture = proxyquire("../../main/handlers/setApiKey", {
+    fixture = proxyquire("../../main/eventHandlers/setApiKey", {
       "../reduxStore": {
         dispatch: dispatch
       },

@@ -4,9 +4,9 @@ import { spy, stub } from "sinon";
 
 chai.use(chaiAsPromised);
 
-import { getDispatchForHandlers, ignored, makeHandler } from "../main/handler";
+import { getDispatchForHandlers, ignored, makeHandler } from "../main/eventHandler";
 
-describe("handler", () => {
+describe("eventHandler", () => {
   let callback;
 
   let handlers, genericHandler, genericHandler2, genericHandler3, genericHandler4;

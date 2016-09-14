@@ -1,7 +1,7 @@
-import findCandidatesWithNameLikeHandler from "./handlers/findCandidatesWithNameLike";
-import incrementHandler from "./handlers/increment";
-import setApiKeyHandler from "./handlers/setApiKey";
-import setCandidateNameHandler from "./handlers/setCandidateName";
+import findCandidatesWithNameLikeHandler from "./eventHandlers/findCandidatesWithNameLike";
+import incrementHandler from "./eventHandlers/increment";
+import setApiKeyHandler from "./eventHandlers/setApiKey";
+import setCandidateNameHandler from "./eventHandlers/setCandidateName";
 
 import { type as findCandidatesWithNameLikeType } from "./eventCreators/findCandidatesWithNameLike";
 import { type as incrementType } from "./eventCreators/increment";

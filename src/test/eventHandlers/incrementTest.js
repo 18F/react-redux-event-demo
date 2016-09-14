@@ -17,7 +17,7 @@ describe("increment event handler", () => {
   beforeEach(() => {
     dispatch = stub();
 
-    fixture = proxyquire("../../main/handlers/increment", {
+    fixture = proxyquire("../../main/eventHandlers/increment", {
       "../reduxStore": {
         dispatch: dispatch
       },

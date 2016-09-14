@@ -25,8 +25,8 @@ describe("dispatchEvent", () => {
     getDispatchForHandlers.withArgs(handlers, getState).returns(generatedDispatchEvent);
     
     fixture = proxyquire("../main/dispatchEvent", {
-      "./handlers": handlers,
-      "./handler": {
+      "./eventHandlers": handlers,
+      "./eventHandler": {
         getDispatchForHandlers: getDispatchForHandlers
       },
       "./reduxStore": {

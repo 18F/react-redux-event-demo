@@ -17,11 +17,11 @@ describe("maps handlers", () => {
   const setCandidateNameType = "scnt";
   
   beforeEach(() => {
-    fixture = proxyquire("../main/handlers", {
-      "./handlers/findCandidatesWithNameLike": findCandidatesWithNameLikeHandler,
-      "./handlers/increment": incrementHandler,
-      "./handlers/setApiKey": setApiKeyHandler,
-      "./handlers/setCandidateName": setCandidateNameHandler,
+    fixture = proxyquire("../main/eventHandlers", {
+      "./eventHandlers/findCandidatesWithNameLike": findCandidatesWithNameLikeHandler,
+      "./eventHandlers/increment": incrementHandler,
+      "./eventHandlers/setApiKey": setApiKeyHandler,
+      "./eventHandlers/setCandidateName": setCandidateNameHandler,
       "./eventCreators/findCandidatesWithNameLike": {
         type: findCandidatesWithNameLikeType
       },
