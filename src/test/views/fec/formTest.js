@@ -7,7 +7,7 @@ proxyquire.noCallThru();
 
 describe("fec form view", () => {
   let Fixture;
-  let eventDispatch;
+  let dispatchEvent;
   let createSetApiKeyEvent;
   let createSetCandidateNameEvent;
   let preventDefault;
@@ -19,13 +19,13 @@ describe("fec form view", () => {
   const createFindCandidatesWithNameLikeEvent = () => { return findCandidatesWithNameLikeEvent; };
   
   beforeEach(() => {
-    eventDispatch = spy();
+    dispatchEvent = spy();
     createSetApiKeyEvent = stub();
     createSetCandidateNameEvent = stub();
     preventDefault = spy();
     
     Fixture = proxyquire("../../../main/views/fec/form", {
-      "../../eventDispatch": eventDispatch,
+      "../../dispatchEvent": dispatchEvent,
       "../../eventCreators/setApiKey": createSetApiKeyEvent,
       "../../eventCreators/setCandidateName": createSetCandidateNameEvent,
       "../../eventCreators/findCandidatesWithNameLike": createFindCandidatesWithNameLikeEvent
@@ -40,8 +40,8 @@ describe("fec form view", () => {
 
     reactWrapper.find("#apiKey").simulate("keyUp", { target: { value: newApiKey }});
 
-    expect(eventDispatch.calledOnce).to.be.true;
-    expect(eventDispatch.calledWith(setApiKeyEvent)).to.be.true;
+    expect(dispatchEvent.calledOnce).to.be.true;
+    expect(dispatchEvent.calledWith(setApiKeyEvent)).to.be.true;
   });
 
   it("populates the api key input with the api key property", () => {
@@ -60,8 +60,8 @@ describe("fec form view", () => {
 
     reactWrapper.find("#candidateName").simulate("keyUp", { target: { value: newCandidateName }});
 
-    expect(eventDispatch.calledOnce).to.be.true;
-    expect(eventDispatch.calledWith(setCandidateNameEvent)).to.be.true;
+    expect(dispatchEvent.calledOnce).to.be.true;
+    expect(dispatchEvent.calledWith(setCandidateNameEvent)).to.be.true;
   });
   
   it("populates the candidate name input with the api key property", () => {
@@ -77,8 +77,8 @@ describe("fec form view", () => {
 
     reactWrapper.find("button").simulate("click", { preventDefault: preventDefault });
 
-    expect(eventDispatch.calledOnce).to.be.true;
-    expect(eventDispatch.calledWith(findCandidatesWithNameLikeEvent)).to.be.true;
+    expect(dispatchEvent.calledOnce).to.be.true;
+    expect(dispatchEvent.calledWith(findCandidatesWithNameLikeEvent)).to.be.true;
     expect(preventDefault.calledOnce).to.be.true;
   });
   

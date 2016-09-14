@@ -1,10 +1,10 @@
 import React from "react";
 
-import eventDispatch from "../../eventDispatch";
+import dispatchEvent from "../../dispatchEvent";
 import incrementEvent from "../../eventCreators/increment";
 
 const increment = () => {
-  eventDispatch(incrementEvent());
+  dispatchEvent(incrementEvent());
 };
 
 const hello = ({ count }) => {

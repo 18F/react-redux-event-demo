@@ -1,23 +1,23 @@
 import React from "react";
 
-import eventDispatch from "../../eventDispatch";
+import dispatchEvent from "../../dispatchEvent";
 import setApiKey from "../../eventCreators/setApiKey";
 import setCandidateName from "../../eventCreators/setCandidateName";
 import findCandidatesWithNameLike from "../../eventCreators/findCandidatesWithNameLike";
 
 const onKeyUpSetApiKey = (event) => {
   const apiKey = event.target.value;
-  eventDispatch(setApiKey(apiKey));
+  dispatchEvent(setApiKey(apiKey));
 };
 
 const onKeyUpSetCandidateName = (event) => {
   const candidateName = event.target.value;
-  eventDispatch(setCandidateName(candidateName));
+  dispatchEvent(setCandidateName(candidateName));
 };
 
 
 const triggerFindCandidatesWithNameLike = (event) => {
-  eventDispatch(findCandidatesWithNameLike());
+  dispatchEvent(findCandidatesWithNameLike());
   event.preventDefault();
 };
 

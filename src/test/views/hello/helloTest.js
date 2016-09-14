@@ -12,7 +12,7 @@ const setCandidatesType = "set api results type";
 describe("hello view", () => {
   let Fixture;
   
-  let eventDispatch;
+  let dispatchEvent;
   const sampleIncrementEvent = {
     myEvent: "is your event"
   };
@@ -20,9 +20,9 @@ describe("hello view", () => {
   const incrementEvent = () => { return sampleIncrementEvent; };
   
   beforeEach(() => {
-    eventDispatch = spy();
+    dispatchEvent = spy();
     Fixture = proxyquire("../../../main/views/hello/hello", {
-      "../../eventDispatch": eventDispatch,
+      "../../dispatchEvent": dispatchEvent,
       "../../eventCreators/increment": incrementEvent
     }).default;
   });
@@ -32,8 +32,8 @@ describe("hello view", () => {
 
     reactWrapper.find("button").simulate("click");
 
-    expect(eventDispatch.calledWith(sampleIncrementEvent)).to.be.true;
-    expect(eventDispatch.calledOnce).to.be.true;
+    expect(dispatchEvent.calledWith(sampleIncrementEvent)).to.be.true;
+    expect(dispatchEvent.calledOnce).to.be.true;
   });
 
   it("displays a count property somewhere", () => {

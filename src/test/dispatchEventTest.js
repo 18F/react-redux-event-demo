@@ -3,18 +3,18 @@ import { spy, stub } from "sinon";
 import proxyquire from "proxyquire";
 proxyquire.noCallThru();
 
-describe("eventDispatch", () => {
+describe("dispatchEvent", () => {
   let fixture;
   
   let getState;
   let getDispatchForHandlers;
-  let dispatchEvent;
+  let generatedDispatchEvent;
   
   beforeEach(() => {
     getState = spy();
 
     getDispatchForHandlers = stub();
-    dispatchEvent = spy();
+    generatedDispatchEvent = spy();
     
     const handlers = {
       type1: [ () => { } ],
@@ -22,9 +22,9 @@ describe("eventDispatch", () => {
       type3: [ () => { }, () => { } ]
     };
 
-    getDispatchForHandlers.withArgs(handlers, getState).returns(dispatchEvent);
+    getDispatchForHandlers.withArgs(handlers, getState).returns(generatedDispatchEvent);
     
-    fixture = proxyquire("../main/eventDispatch", {
+    fixture = proxyquire("../main/dispatchEvent", {
       "./handlers": handlers,
       "./handler": {
         getDispatchForHandlers: getDispatchForHandlers
@@ -40,7 +40,7 @@ describe("eventDispatch", () => {
 
     fixture(event);
 
-    expect(dispatchEvent.calledOnce).to.be.true;
-    expect(dispatchEvent.calledWith(event)).to.be.true;
+    expect(generatedDispatchEvent.calledOnce).to.be.true;
+    expect(generatedDispatchEvent.calledWith(event)).to.be.true;
   });
 });
