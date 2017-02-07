@@ -18,9 +18,6 @@ describe("increment event handler", () => {
     dispatch = stub();
 
     fixture = proxyquire("../../main/eventHandlers/increment", {
-      "../reduxStore": {
-        dispatch: dispatch
-      },
       "../eventCreators/increment": {
         type: incrementType
       },
@@ -29,13 +26,11 @@ describe("increment event handler", () => {
   });
   
   it("dispatches action to store ", () => {
-    const state = { };
-    const event = { };
     const dispatchedAction = { "dispatcho": "gazpacho" };
     
     dispatch.withArgs(incrementActionInstance).returns(dispatchedAction);
 
-    const actual = fixture(state, event);
+    const actual = fixture({ dispatch });
 
     expect(actual).to.equal(dispatchedAction);
   });

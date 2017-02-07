@@ -11,10 +11,16 @@ describe("dispatchEvent", () => {
   let generatedDispatchEvent;
   
   beforeEach(() => {
-    getState = spy();
-
     getDispatchForHandlers = stub();
     generatedDispatchEvent = spy();
+
+    const store = {
+      hello: "world"
+    };
+    
+    const eventDispatch = {
+      dispatchEvent: generatedDispatchEvent
+    };
     
     const handlers = {
       type1: [ () => { } ],
@@ -22,20 +28,16 @@ describe("dispatchEvent", () => {
       type3: [ () => { }, () => { } ]
     };
 
-    getDispatchForHandlers.withArgs(handlers, getState).returns(generatedDispatchEvent);
+    getDispatchForHandlers.withArgs([ handlers ], store).returns(eventDispatch);
     
     fixture = proxyquire("../main/dispatchEvent", {
       "./eventHandlers": handlers,
-      "./eventHandler": {
-        getDispatchForHandlers: getDispatchForHandlers
-      },
-      "./reduxStore": {
-        getState: getState
-      }
+      "./eventHandler": getDispatchForHandlers,
+      "./reduxStore": store
     }).default;
   });
   
-  it("presents events to registered handlers", () => {
+  it("dispatches events to registered handlers", () => {
     const event = { type: "hello", value: "world" };
 
     fixture(event);

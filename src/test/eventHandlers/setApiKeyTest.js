@@ -10,18 +10,12 @@ describe("set api key event handler", () => {
   let setApiKeyActionCreator;
 
   const apiKey = "API Key f88ij8u9jjfgsf";
-  const state = {
-    "words": "have meaning"
-  };
   
   beforeEach(() => {
     dispatch = stub();
     setApiKeyActionCreator = stub();
 
     fixture = proxyquire("../../main/eventHandlers/setApiKey", {
-      "../reduxStore": {
-        dispatch: dispatch
-      },
       "../actionCreators/setApiKey": setApiKeyActionCreator
     }).default;
   });
@@ -38,7 +32,7 @@ describe("set api key event handler", () => {
     setApiKeyActionCreator.withArgs(apiKey).returns(setApiKeyAction);
     dispatch.withArgs(setApiKeyAction).returns(dispatchedAction);
     
-    const actual = fixture(state, event);
+    const actual = fixture({ dispatch, event });
 
     expect(actual).to.equal(dispatchedAction);
   });

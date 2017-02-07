@@ -11,18 +11,12 @@ describe("set candidate name event handler", () => {
 
   const setCandidateNameType = "candidate name type here";
   const candidateName = "My Name";
-  const state = {
-    "world": "told me hello the other day"
-  };
   
   beforeEach(() => {
     dispatch = stub();
     setCandidateNameActionCreator = stub();
 
     fixture = proxyquire("../../main/eventHandlers/setCandidateName", {
-      "../reduxStore": {
-        dispatch: dispatch
-      },
       "../actionCreators/setCandidateName": setCandidateNameActionCreator
     }).default;
   });
@@ -36,7 +30,7 @@ describe("set candidate name event handler", () => {
     setCandidateNameActionCreator.withArgs(candidateName).returns(setCandidateNameAction);
     dispatch.withArgs(setCandidateNameAction).returns(dispatchedAction);
 
-    const actual = fixture(state, event);
+    const actual = fixture({ dispatch, event });
 
     expect(actual).to.equal(dispatchedAction);
   });

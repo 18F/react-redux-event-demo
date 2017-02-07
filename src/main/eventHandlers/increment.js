@@ -1,7 +1,6 @@
-import { dispatch } from "../reduxStore";
 import incrementAction from "../actionCreators/increment";
 
-const increment = (state, event) => {
+const increment = ({ dispatch }) => {
   return dispatch(incrementAction());
 };
 
