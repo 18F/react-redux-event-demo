@@ -1,7 +1,6 @@
-import { dispatch } from "../reduxStore";
 import setCandidateNameAction from "../actionCreators/setCandidateName";
 
-const setCandidateName = (state, { name }) => {
+const setCandidateName = ({ dispatch, event: { name } }) => {
   const action = setCandidateNameAction(name);
   return dispatch(action);
 };

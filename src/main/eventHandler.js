@@ -1,38 +1,55 @@
-import forEach from "lodash.forEach";
+import { difference, forEach } from "lodash";
 
 const ignoredPromiseResolution = "no-op";
 const resolvedPromise = Promise.resolve(ignoredPromiseResolution);
 
 const makeHandler = (eventType, callback) => {
-  return (state, event) => {
+  return (event, getState, dispatch, dispatchEvent) => {
     if (event.type !== eventType) {
       return resolvedPromise;
     }
-    
-    return Promise.resolve(callback(state, event));
+    const state = getState();
+
+    return Promise.resolve(callback({state, dispatch, getState, event, dispatchEvent}));
   };
 };
 
-const getDispatchForHandlers = (typeHandlerMap, getState) => {
+const getDispatchForHandlers = (typedHandlerMaps, { getState, dispatch }) => {
   let handlerInstances = [];
+  let attachedHandlers = [];
+  
+  const appendHandlersForMappings = (typedHandlerMap) => {
+    forEach(typedHandlerMap, (handlers, type) => {
+      const typeHandlers = handlers.reduce((accumulator, handler) => {
+        const mappedHandler = makeHandler(type, handler);
+        return accumulator.concat(mappedHandler);
+      }, []);
+      
+      handlerInstances = handlerInstances.concat(typeHandlers);
+    });
+  };
+  
+  typedHandlerMaps.forEach(appendHandlersForMappings);
 
-  forEach(typeHandlerMap, (handlers, type) => {
-    const typeHandlers = handlers.reduce((accumulator, handler) => {
-      const mappedHandler = makeHandler(type, handler);
-      return accumulator.concat(mappedHandler);
-    }, []);
-    
-    handlerInstances = handlerInstances.concat(typeHandlers);
-  });
-
-  const dispatch = (event) => {
+  const dispatchEvent = (event) => {
     handlerInstances.forEach((handler) => {
+      handler(event, getState, dispatch, dispatchEvent);
+    });
+    attachedHandlers.forEach((handler) => {
       const state = getState();
-      handler(state, event);
+      handler({state, dispatch, getState, event, dispatchEvent});
     });
   };
 
-  return dispatch;
+  const attach = (handler) => {
+    attachedHandlers = attachedHandlers.concat(handler);
+  };
+
+  const detach = (handler) => {
+    attachedHandlers = difference(attachedHandlers, [ handler ]);
+  };
+  
+  return { dispatchEvent, attach, detach };
 };
 
-export { getDispatchForHandlers, makeHandler, ignoredPromiseResolution as ignored };
+export { getDispatchForHandlers as default};

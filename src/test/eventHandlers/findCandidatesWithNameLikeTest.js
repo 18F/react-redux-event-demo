@@ -32,9 +32,6 @@ describe("find candidates with name like handler", () => {
     
     fixture = proxyquire("../../main/eventHandlers/findCandidatesWithNameLike", {
       "../fetchHandler": fetchProxy,
-      "../reduxStore": {
-        dispatch: dispatch
-      },
       "../actionCreators/setCandidates": setCandidatesAction,
       "../actionCreators/setCandidatesError": setCandidatesError
     }).default;
@@ -57,7 +54,7 @@ describe("find candidates with name like handler", () => {
     setCandidatesAction.withArgs(results).returns(action);
     dispatch.withArgs(action).returns(success);
     
-    const actual = fixture(state, event);
+    const actual = fixture({ state, dispatch, event });
 
     expect(actual).to.eventually.equal(success);
   });
@@ -70,7 +67,7 @@ describe("find candidates with name like handler", () => {
     wireFetchProxyWithResponsePromise(rejectedPromise);
     dispatch.withArgs(errorAction).returns(failure);
     
-    const actual = fixture(state, event);
+    const actual = fixture({ state, dispatch, event });
 
     expect(actual).to.eventually.equal(failure);
   });

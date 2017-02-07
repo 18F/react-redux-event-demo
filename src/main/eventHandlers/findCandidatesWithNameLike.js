@@ -1,23 +1,26 @@
-import { dispatch } from "../reduxStore";
 import fetchProxy from "../fetchHandler";
 import setCandidatesAction from "../actionCreators/setCandidates";
 import setCandidatesErrorAction from "../actionCreators/setCandidatesError";
 
-const findCandidatesWithNameLike = ({ fec: { candidateName: candidateName, apiKey: apiKey } }, event) => {
+const findCandidatesWithNameLike = ({ dispatch, state: { fec: { candidateName, apiKey } } }) => {
   const url = `https://api.open.fec.gov/v1/names/candidates/?q=${candidateName}&api_key=${apiKey}`;
   return fetchProxy(url)
-    .then(processJsonResults)
-    .catch(handleError);
+    .then(processJsonResults({ dispatch }))
+    .catch(handleError({ dispatch }));
 };
 
-const processJsonResults = ({ results }) => {
-  const action = setCandidatesAction(results);
-  return dispatch(action);
+const processJsonResults = ({ dispatch }) => {
+  return ({ results }) => {
+    const action = setCandidatesAction(results);
+    return dispatch(action);
+  };
 };
 
-const handleError = () => {
-  const action = setCandidatesErrorAction();
-  return dispatch(action);
+const handleError = ({ dispatch }) => {
+  return () => {
+    const action = setCandidatesErrorAction();
+    return dispatch(action);
+  };
 };
 
 export default findCandidatesWithNameLike;

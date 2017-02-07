@@ -4,13 +4,13 @@ import { spy, stub } from "sinon";
 
 chai.use(chaiAsPromised);
 
-import { getDispatchForHandlers, ignored, makeHandler } from "../main/eventHandler";
+import getDispatchForHandlers from "../main/eventHandler";
 
 describe("eventHandler", () => {
   let callback;
 
   let handlers, genericHandler, genericHandler2, genericHandler3, genericHandler4;
-  let getState;
+  let getState, dispatch;
   
   const eventType = "lwfijw8gy824ijrwfn";
   const otherEventType = "48g90";
@@ -21,51 +21,22 @@ describe("eventHandler", () => {
   beforeEach(() => {
     callback = stub();
     getState = stub();
+    dispatch = stub();
     genericHandler = spy();
     genericHandler2 = spy();
     genericHandler3 = spy();
     genericHandler4 = spy();
 
-    handlers = {
-      ["type1"]: [ genericHandler ],
-      ["type2"]: [ genericHandler2 ],
-      ["type3"]: [ genericHandler3, genericHandler4 ]
-    };
+    handlers = [{
+      [ eventType ]: [ genericHandler ],
+      [ "type-whatever" ]: [ genericHandler2 ]
+    }, {
+      [ otherEventType ]: [ genericHandler3, genericHandler4 ]
+    }];
   });
   
-  it("calls the callback if the event matches", () => {
-    const event = {
-      type: eventType,
-      something: "other"
-    };
-    const result = {
-      returnThis: "please"
-    };
-    
-    callback.withArgs(state, event).returns(result);
-
-    const handler = makeHandler(eventType, callback);
-    const actual = handler(state, event);
-    
-    expect(callback.calledOnce).to.be.true;
-    expect(actual).to.eventually.equal(result);
-  });
-
-  it("ignores irrelevant events", () => {
-    const event = {
-      type: eventType + "some other string",
-      blah: "foo"
-    };
-
-    const handler = makeHandler(eventType, callback);
-    const actual = handler(state, event);
-
-    expect(callback.callCount).to.equal(0);
-    expect(actual).to.eventually.equal(ignored);
-  });
-
-  it("presents events to registered handlers", () => {
-    const event = { type: "type3", value: "world" };
+  it("presents events to a single registered handler", () => {
+    const event = { type: eventType, value: "world" };
     const state = {
       oblivious: {
         hello: "world",
@@ -74,15 +45,88 @@ describe("eventHandler", () => {
     };
     getState.returns(state);
 
-    const dispatch = getDispatchForHandlers(handlers, getState);
-    dispatch(event);
+    const { dispatchEvent } = getDispatchForHandlers(handlers, { getState, dispatch });
+    dispatchEvent(event);
+
+    expect(genericHandler.calledOnce).to.be.true;
+    expect(genericHandler.calledWith({ state, event, getState, dispatch, dispatchEvent })).to.be.true;
+    expect(genericHandler2.called).to.be.false;
+    expect(genericHandler3.called).to.be.false;
+    expect(genericHandler4.called).to.be.false;
+  });
+
+  it("presents events to multiple registered handlers", () => {
+    const event = { type: otherEventType, value: "world" };
+    const state = {
+      oblivious: {
+        hello: "world",
+        what: "is your name?"
+      }
+    };
+    getState.returns(state);
+
+    const { dispatchEvent } = getDispatchForHandlers(handlers, { getState, dispatch });
+    dispatchEvent(event);
 
     expect(genericHandler.called).to.be.false;
     expect(genericHandler2.called).to.be.false;
     expect(genericHandler3.calledOnce).to.be.true;
-    expect(genericHandler3.calledWith(state, event)).to.be.true;
+    expect(genericHandler3.calledWith({ state, event, getState, dispatch, dispatchEvent })).to.be.true;
     expect(genericHandler4.calledOnce).to.be.true;
-    expect(genericHandler4.calledWith(state, event)).to.be.true;
+    expect(genericHandler4.calledWith({ state, event, getState, dispatch, dispatchEvent })).to.be.true;
+  });
+  
+  it("presents all events to attached handlers", () => {
+    const event = { type: otherEventType, value: "world" };
+    const event2 = { type: eventType, value: "what" };
+    const state = {
+      oblivious: {
+        hello: "world",
+        what: "is your name?"
+      }
+    };
+    getState.returns(state);
+
+    const { dispatchEvent, attach, detach } = getDispatchForHandlers([], { getState, dispatch });
+    attach(genericHandler);
+    attach(genericHandler3);
+    dispatchEvent(event);
+    dispatchEvent(event2);
+
+    expect(genericHandler.calledTwice).to.be.true;
+    expect(genericHandler3.calledTwice).to.be.true;
+    expect(genericHandler.calledWith({ state, event, getState, dispatch, dispatchEvent })).to.be.true;
+    expect(genericHandler3.calledWith({ state, event, getState, dispatch, dispatchEvent })).to.be.true;
+    expect(genericHandler.calledWith({ state, event: event2, getState, dispatch, dispatchEvent })).to.be.true;
+    expect(genericHandler3.calledWith({ state, event: event2, getState, dispatch, dispatchEvent })).to.be.true;
+  });
+    
+  it("does not present events to detached handlers while presenting them to the remaining attached handlers", () => {
+    const event = { type: otherEventType, value: "world" };
+    const event2 = { type: eventType, value: "what" };
+    const state = {
+      oblivious: {
+        hello: "world",
+        what: "is your name?"
+      }
+    };
+    getState.returns(state);
+
+    const { dispatchEvent, attach, detach } = getDispatchForHandlers([{
+      [ eventType ]: [ genericHandler2 ]
+    }], { getState, dispatch });
+    attach(genericHandler);
+    attach(genericHandler3);
+    detach(genericHandler);
+    dispatchEvent(event);
+    dispatchEvent(event2);
+
+    expect(genericHandler.called).to.be.false;
+    expect(genericHandler2.calledOnce).to.be.true;
+    expect(genericHandler2.calledWith({ state, event: event2, getState, dispatch, dispatchEvent })).to.be.true;
+    expect(genericHandler3.calledTwice).to.be.true;
+    expect(genericHandler3.calledWith({ state, event, getState, dispatch, dispatchEvent })).to.be.true;
+    expect(genericHandler3.calledWith({ state, event: event2, getState, dispatch, dispatchEvent })).to.be.true;
   });
 
 });
