@@ -52,4 +52,4 @@ const getDispatchForHandlers = (typedHandlerMaps, { getState, dispatch }) => {
   return { dispatchEvent, attach, detach };
 };
 
-export { getDispatchForHandlers as default};
+export { getDispatchForHandlers as default };

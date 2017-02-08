@@ -1,8 +1,7 @@
-const findCandidatesWithNameLikeType = "findCandidatesWithNameLike";
+const type = "findCandidatesWithNameLike";
 
-const findCandidatesWithNameLike = () => ({
-  type: findCandidatesWithNameLikeType
+export { type };
+
+export default () => ({
+  type: type
 });
-
-export { findCandidatesWithNameLikeType as type };
-export default findCandidatesWithNameLike;

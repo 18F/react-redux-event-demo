@@ -1,9 +1,8 @@
 const type = "setCandidateName";
 
-const setCandidateName = (name) => ({
+export { type }; 
+
+export default (name) => ({
   type: type,
   name: name
-});
-
-export { type }; 
-export default setCandidateName;
+});;
