@@ -1,16 +1,13 @@
 import { difference, forEach } from "lodash";
 
-const ignoredPromiseResolution = "no-op";
-const resolvedPromise = Promise.resolve(ignoredPromiseResolution);
-
 const makeHandler = (eventType, callback) => {
   return (event, getState, dispatch, dispatchEvent) => {
     if (event.type !== eventType) {
-      return resolvedPromise;
+      return;
     }
     const state = getState();
 
-    return Promise.resolve(callback({state, dispatch, getState, event, dispatchEvent}));
+    callback({state, dispatch, getState, event, dispatchEvent});
   };
 };
 

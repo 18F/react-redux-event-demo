@@ -6,7 +6,7 @@ const handlerMaps = [
   eventHandlerMap
 ];
 
-const eventHandler = getDispatchForHandlers(handlerMaps, store);
-const dispatchEvent = eventHandler.dispatchEvent;
+const eventDispatch = getDispatchForHandlers(handlerMaps, store);
+const dispatchEvent = eventDispatch.dispatchEvent;
 
 export { dispatchEvent as default }; 
