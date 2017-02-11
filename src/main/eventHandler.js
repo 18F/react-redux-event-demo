@@ -1,41 +1,41 @@
 import { difference, forEach } from "lodash";
 
 const makeHandler = (eventType, callback) => {
-  return (event, getState, dispatch, dispatchEvent) => {
+  return ({ state, event, getState, dispatch, dispatchEvent }) => {
     if (event.type !== eventType) {
       return;
     }
-    const state = getState();
 
     callback({state, dispatch, getState, event, dispatchEvent});
   };
 };
 
 const getDispatchForHandlers = (typedHandlerMaps, { getState, dispatch }) => {
-  let handlerInstances = [];
   let attachedHandlers = [];
   
-  const appendHandlersForMappings = (typedHandlerMap) => {
+  const appendHandlersForMappings = (initialHandlers, typedHandlerMap) => {
     forEach(typedHandlerMap, (handlers, type) => {
       const typeHandlers = handlers.reduce((accumulator, handler) => {
         const mappedHandler = makeHandler(type, handler);
         return accumulator.concat(mappedHandler);
       }, []);
       
-      handlerInstances = handlerInstances.concat(typeHandlers);
+      initialHandlers = initialHandlers.concat(typeHandlers);
     });
+    
+    return initialHandlers;
   };
   
-  typedHandlerMaps.forEach(appendHandlersForMappings);
+  const initialHandlers = typedHandlerMaps.reduce(appendHandlersForMappings, []);
 
   const dispatchEvent = (event) => {
-    handlerInstances.forEach((handler) => {
-      handler(event, getState, dispatch, dispatchEvent);
-    });
-    attachedHandlers.forEach((handler) => {
+    const applyHandler = (handler) => {
       const state = getState();
-      handler({state, dispatch, getState, event, dispatchEvent});
-    });
+      handler({ state, event, getState, dispatch, dispatchEvent });
+    };
+    
+    initialHandlers.forEach(applyHandler);
+    attachedHandlers.forEach(applyHandler);
   };
 
   const attach = (handler) => {
